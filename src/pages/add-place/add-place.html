@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add a Place</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-list>
+      <ion-item>
+        <ion-label>Title</ion-label>
+        <ion-input type="text" placeholder="Beautiful Place..." name='title' ngModel required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Short Description</ion-label>
+        <ion-textarea color="primary" name="description" ngModel required></ion-textarea>
+      </ion-item>
+    </ion-list>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button ion-button block outline type="button" icon-left (click)="onLocat()">
+            <ion-icon name="locate"></ion-icon>
+            Located Me
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button block outline type='button' icon-left (click)="onOpenMap()">
+            <ion-icon name="map"></ion-icon>
+            Select On Map
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="locationIsSet">
+        <ion-col>
+          <agm-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="15" (mapClick)="onSetMarker($event)">
+            <agm-marker [latitude]="location.lat" [longitude]="location.lng"></agm-marker>
+          </agm-map>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col text-center>
+          <ion-label>Take a Photo!</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left block outline type='button' (click)="onTakePhoto() ">
+            <ion-icon name="camera"></ion-icon>
+            Open Camera
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="imageUrl">
+        <ion-col>
+          <img src="{{imageUrl}}">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button [disabled]="!f.valid ||!locationIsSet" ion-button color="secondary" block type='submit'>
+            Add this Place
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
